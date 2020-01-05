@@ -1,0 +1,21 @@
+/*
+利用for循环输出*金字塔
+提供者：misspeak
+定稿日期：2020-1-5
+编辑器：Visual Studio 2017
+*/
+#include "pch.h"
+#include<iostream>
+using namespace std;
+int main()
+{
+	int number;                                           //记录金字塔的层数。
+	cout << "输入层数：";
+	cin >> number;
+	for (int i = 0; i <= number; i++)
+	{
+		for (int j = 0; j <= number - i; j++) printf(" ");//打印空格
+		for (int k = 0; k <= 2 * i; k++) printf("*");     //打印*
+		cout << "\n";                                     //控制换行
+	}
+}
