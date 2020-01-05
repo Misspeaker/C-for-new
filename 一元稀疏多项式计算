@@ -1,0 +1,227 @@
+/*
+一元稀疏多项式计算
+提供者：misspeak
+定稿日期：2020-1-5
+编辑器：Visual Studio 2017
+*/
+#include "pch.h"
+#include<iostream>
+#include <vector>
+#include <Windows.h>
+using namespace std;
+struct Xiang
+{
+	float a;           //系数
+	int b;             //指数
+}X;                    //单项结构体
+struct Si
+{
+	vector<Xiang> Main;
+	float C;           //储存常数C
+	long num;          //储存项数
+}A, B;                  //稀疏多项式结构体
+void Creat()
+{
+	cout << "\n请输入多项式A的数据\n项数：";
+	cin >> A.num;
+	for (int i = 0; i < A.num; i++)
+	{
+		cout << "第" << i + 1 << "项的系数：";
+		cin >> X.a;
+		cout << "第" << i + 1 << "项的指数：";
+		cin >> X.b;
+		A.Main.insert(A.Main.end(), X);
+	}
+	cout << "输入常数项:";
+	cin >> A.C;
+	cout << "\n请输入多项式B的数据\n项数：";
+	cin >> B.num;
+	for (int i = 0; i < B.num; i++)
+	{
+		cout << "第" << i + 1 << "项的系数：";
+		cin >> X.a;
+		cout << "第" << i + 1 << "项的指数：";
+		cin >> X.b;
+		B.Main.insert(B.Main.end(), X);
+	}
+	cout << "输入常数项:";
+	cin >> B.C;                                             //程序至此，将A、B两项的数据录入完毕；接下来按指数大小排序
+	if (A.num > 1)
+	{
+		for (int i = 0; i < A.num - 1; i++)
+		{
+			for (int j = 0; j < A.num - i - 1; j++)
+			{
+				if (A.Main[j].b < A.Main[j + 1].b)
+				{
+					X.a = A.Main[j].a;
+					X.b = A.Main[j].b;
+					A.Main[j].a = A.Main[j + 1].a;
+					A.Main[j].b = A.Main[j + 1].b;
+					A.Main[j + 1].a = X.a;
+					A.Main[j + 1].b = X.b;
+				}
+			}
+		}
+	}
+	if (B.num > 1)
+	{
+		for (int i = 0; i < B.num - 1; i++)
+		{
+			for (int j = 0; j < B.num - i - 1; j++)
+			{
+				if (B.Main[j].b < B.Main[j + 1].b)
+				{
+					X.a = B.Main[j].a;
+					X.b = B.Main[j].b;
+					B.Main[j].a = B.Main[j + 1].a;
+					B.Main[j].b = B.Main[j + 1].b;
+					B.Main[j + 1].a = X.a;
+					B.Main[j + 1].b = X.b;
+				}
+			}
+		}
+	}                                                        //当项数大于1时，进行冒泡排序;
+}
+int Show()
+{
+	system("cls");
+	if (!A.Main.size())
+	{
+		cout << "无数据！\n";
+		return -1;
+	}
+	cout << "多项式A:" << A.Main[0].a << "X^" << A.Main[0].b;
+	for (int i = 1; i < A.num; i++)
+	{
+		if (A.Main[i].a > 0)cout << "+";
+		cout << A.Main[i].a << "X^" << A.Main[i].b;
+	}                                                        //输出A的非常数项
+	if (A.C >= 0)cout << "+";
+	cout << A.C << endl;                                     //输出A的常数项
+	cout << "多项式B:" << B.Main[0].a << "X^" << B.Main[0].b;
+	for (int i = 1; i < B.num; i++)
+	{
+		if (B.Main[i].a > 0)cout << "+";
+		cout << B.Main[i].a << "X^" << B.Main[i].b;
+	}                                                         //输出B的非常数项
+	if (B.C >= 0)cout << "+";
+	cout << B.C << endl;                                      //输出B的常数项
+	system("pause");
+	return 0;
+}
+void Count()
+{
+	cout << "\nA+B=>++";
+	int i = 0, j = 0;
+	while (1)
+	{
+		if (i >= A.num&&j >= B.num)break;                     //判断A、B是否输都出完毕
+		if (i >= A.num)
+		{
+			for (int k = j; k < B.num; k++)
+			{
+				if (B.Main[k].a > 0)cout << "+";
+				cout << B.Main[k].a << "X^" << B.Main[k].b;
+			}
+			break;
+		}                                                     //若A先输出完毕，则将剩余的B输出
+		if (j >= B.num)
+		{
+			for (int k = i; k < A.num; k++)
+			{
+				if (A.Main[k].a > 0)cout << "+";
+				cout << A.Main[k].a << "X^" << A.Main[k].b;
+			}
+			break;
+		}                                                     //若B先输出完毕，则将剩余的A输出
+		if (A.Main[i].b > B.Main[j].b)
+		{
+			if (A.Main[i].a > 0)cout << "+";
+			cout << A.Main[i].a << "X^" << A.Main[i].b;
+			i++;
+			continue;
+		}
+		else
+		{
+			if ((A.Main[i].a + B.Main[j].a) != 0)
+			{
+				if (A.Main[i].b < B.Main[j].b)
+				{
+					if (B.Main[j].a > 0)cout << "+";
+					cout << B.Main[j].a << "X^" << B.Main[j].b;
+					j++;
+					continue;
+				}
+				if (A.Main[i].a + B.Main[j].a > 0) cout << "+";
+				cout << A.Main[i].a + B.Main[j].a << "X^" << B.Main[j].b;
+			}
+			i++;
+			j++;
+		}
+	}
+	if (A.C + B.C >= 0)cout << "+";
+	cout << A.C + B.C << "+++<" << endl;                 //输出常数项
+													 //多项式减法将B乘上-1，再与A相加；
+	for (int i = 0; i < B.num; i++)B.Main[i].a *= -1;//系数自乘运算。
+	B.C *= -1;                                       //常数项自乘-1
+													 //下面代码也是运算一次相加；
+	cout << "\nA-B=>++";
+	i = 0; j = 0;
+	while (1)
+	{
+		if (i >= A.num&&j >= B.num)break;             //判断A、B是否输都出完毕
+		if (i >= A.num)
+		{
+			for (int k = j; k < B.num; k++)
+			{
+				if (B.Main[k].a > 0)cout << "+";
+				cout << B.Main[k].a << "X^" << B.Main[k].b;
+			}
+			break;
+		}                                             //若A先输出完毕，则将剩余的B输出
+		if (j >= B.num)
+		{
+			for (int k = i; k < A.num; k++)
+			{
+				if (A.Main[k].a > 0)cout << "+";
+				cout << A.Main[k].a << "X^" << A.Main[k].b;
+			}
+			break;
+		}                                             //若B先输出完毕，则将剩余的A输出
+		if (A.Main[i].b > B.Main[j].b)
+		{
+			if (A.Main[i].a > 0)cout << "+";
+			cout << A.Main[i].a << "X^" << A.Main[i].b;
+			i++;
+			continue;
+		}
+		else
+		{
+			if ((A.Main[i].a + B.Main[j].a) != 0)
+			{
+				if (A.Main[i].b < B.Main[j].b)
+				{
+					if (B.Main[j].a > 0)cout << "+";
+					cout << B.Main[j].a << "X^" << B.Main[j].b;
+					j++;
+					continue;
+				}
+				if (A.Main[i].a + B.Main[j].a > 0) cout << "+";
+				cout << A.Main[i].a + B.Main[j].a << "X^" << B.Main[j].b;
+			}
+			i++;
+			j++;
+		}
+	}
+	if (A.C + B.C >= 0)cout << "+";
+	cout << A.C + B.C << "+++<" << endl;             //输出常数项
+	system("pause");
+}
+int main()
+{
+	Creat();
+	Show();
+	Count();
+	return 0;
+}
