@@ -1,6 +1,11 @@
 # C-for-new
 为C语言初学者提供示例代码
 
+相关资源
+------
+在网上看到的类似的资源链接张贴在这里。
+- GitBook|[C语言算法与数据结构笔记](https://alihanniba.gitbooks.io/c/content/)
+
 发展历程
 ------
 ### 刚开始时
