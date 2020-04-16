@@ -5,6 +5,7 @@
 ------
 在网上看到的类似的资源链接张贴在这里。
 - GitBook|[C语言算法与数据结构笔记](https://alihanniba.gitbooks.io/c/content/)
+- C经典实例|[GitHub上的一个开源项目](https://github.com/Mzzopublic/C)
 
 发展历程
 ------
